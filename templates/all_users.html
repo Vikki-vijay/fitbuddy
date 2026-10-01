@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>FitBuddy - All Users</title>
+
+    <link rel="stylesheet" href="/static/style.css">
+
+</head>
+
+
+<body>
+
+<header>
+
+    <div class="container nav">
+
+        <h1>💪 FitBuddy</h1>
+
+        <nav>
+            <a href="/">Home</a>
+        </nav>
+
+    </div>
+
+</header>
+
+
+<main class="container">
+
+    <section class="hero">
+
+        <h2>👥 All Users</h2>
+
+        <p>
+            View saved FitBuddy users and plans.
+        </p>
+
+    </section>
+
+
+    {% for user in users %}
+
+    <section class="card">
+
+        <div class="user-header">
+
+            <div>
+
+                <h2>
+                    {{ user.username }}
+                </h2>
+
+                <p>
+                    User ID:
+                    {{ user.user_id }}
+                </p>
+
+                <p>
+
+                    Age:
+                    {{ user.age }}
+
+                    |
+
+                    Weight:
+                    {{ user.weight }} kg
+
+                    |
+
+                    Goal:
+                    {{ user.goal }}
+
+                    |
+
+                    Intensity:
+                    {{ user.intensity }}
+
+                </p>
+
+            </div>
+
+
+            <form
+                action="/delete-user"
+                method="post"
+            >
+
+                <input
+                    type="hidden"
+                    name="user_id"
+                    value="{{ user.user_id }}"
+                >
+
+
+                <button
+                    type="submit"
+                    class="danger"
+                    onclick="return confirm('Are you sure you want to delete this user?')"
+                >
+                    Delete
+                </button>
+
+            </form>
+
+        </div>
+
+
+        {% if user.plan %}
+
+        <h3>
+            Original Workout Plan
+        </h3>
+
+        <pre>
+{{ user.plan.original_plan }}
+        </pre>
+
+
+        <h3>
+            Nutrition Tip
+        </h3>
+
+        <p>
+            {{ user.plan.nutrition_tip }}
+        </p>
+
+
+        {% if user.plan.updated_plan %}
+
+        <h3>
+            Updated Workout Plan
+        </h3>
+
+        <pre>
+{{ user.plan.updated_plan }}
+        </pre>
+
+
+        <p>
+
+            <strong>
+                Feedback:
+            </strong>
+
+            {{ user.plan.feedback }}
+
+        </p>
+
+        {% endif %}
+
+
+        {% else %}
+
+        <p>
+            No workout plan found.
+        </p>
+
+        {% endif %}
+
+    </section>
+
+
+    {% else %}
+
+    <section class="card">
+
+        <h2>
+            No users found
+        </h2>
+
+        <p>
+            Generate your first workout plan from the home page.
+        </p>
+
+    </section>
+
+    {% endfor %}
+
+</main>
+
+</body>
+
+</html>
